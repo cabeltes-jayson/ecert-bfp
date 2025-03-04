@@ -3,5 +3,34 @@
 {% block title %}LOGIN{% endblock %}
 
 {% block content %}
-    <h1 class="text-2xl font-bold">Login</h1>
+    <h1>Welcome Back!</h1>
+    <p>Your Certificates are ready!</p>
+
+    <form id="login">
+        <label>Email</label>
+        <input type="text" placeholder="Enter Email">
+
+        <br>
+
+        <label>Password</label>
+        <input type="text" placeholder="Enter Password">
+
+        <br>
+
+        <input type="submit" value="Login">
+    </form>
+
+    <br>
+    <p>Already have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+
+    <!-- Prev page -->
+    <a href="{% url 'home' %}"><button>Go Back</button></a>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        document.getElementById("login").addEventListener("submit", function(event) {
+            event.preventDefault(); // redirects to page instead of refreshes to submit
+            window.location.href = "{% url 'dashboard' %}"; 
+        });
+    </script>
 {% endblock %}

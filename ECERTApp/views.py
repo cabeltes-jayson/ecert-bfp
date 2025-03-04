@@ -8,3 +8,15 @@ def login(request):
 
 def signup(request):
     return render(request, 'signup.html')
+
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+def certapp(request):
+    return render(request, 'certapp.html')
+
+def certojt(request):
+    return render(request, 'certojt.html')
+
+def print(request):
+    return render(request, 'print.html')

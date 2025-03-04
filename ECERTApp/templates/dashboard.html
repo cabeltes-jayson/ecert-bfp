@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}DASHBOARD{% endblock %}
+
+{% block content %}
+    <!-- STYLES -->
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 200px;
+        }
+
+    .box {
+        width: 200px;
+        height: 100px;
+        background-color: lightblue;
+        border: 2px solid black;
+        /* display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center; */
+        /* cursor: pointer; */
+    }
+
+    .box a {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        color: black;
+    }
+    </style>
+
+    <!-- BODY -->
+    <h1>E-Certificate Dashboard</h1>
+    <p>Make every cert happen</p>
+
+    <br> 
+
+    <!-- 2 certs, butngan ranig image puhon instead of text -->
+    <div class="container">
+        <div class="box">
+            <a href="{% url 'certapp' %}">Certificate of Appearance</a>
+        </div>
+        
+        <div class="box">
+            <a href="{% url 'certojt' %}">Certificate of OJT</a>
+        </div>
+    </div>
+
+    <!-- Temporary Logout -->
+    <a href="{% url 'home' %}"><button>Logout</button></a>
+
+{% endblock %}
