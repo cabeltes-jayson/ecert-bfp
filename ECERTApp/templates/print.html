@@ -1,21 +1,82 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}PRINT CERTIFICATE{% endblock %}
 
 {% block content %}
+    <!-- PRINT & DOWNLOAD LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.3/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <!-- STYLES -->
     <style>
         .print {
             display: flex;
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .print #prev-header {
+            font-size: 25px;
+            text-align: center;
+            font-weight: bold;
         }
 
         .preview {
             flex: 2;
-            border: 2px solid black;
             padding: 20px;
             margin: 10px;
             background: #f8f9fa;
+            position: relative;
+            box-sizing: border-box;
+            border: 2px solid black;
+        }
+
+        .preview p {
+            text-align: justify;
+        }
+
+        .signature {
+            text-align: right; 
+            position: absolute;  
+            right: 20px;  
+            bottom: 20px; 
+            width: 200px; 
+        }
+
+        .signature p {
+            border-top: 1px solid black; 
+            margin: 0;
+            text-align: center;
+        }
+
+        .logo-container img {
+            height: 100px;
+            width: 100px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .headers p {
+            font-size: 80%;
+            text-align: center;
+            margin: 0;
+        }
+
+        .headers .headerbold {
+            font-weight: bold;
+            font-size: 80%;
+        }
+
+        .headers span {
+            text-decoration: underline; 
+            color: blue;
         }
 
         .buttons {
@@ -27,36 +88,74 @@
             gap: 15px;
         }
 
-        button {
-            font-size: 16px;
-            cursor: pointer;
+        .buttons button {
+            width: 200px; 
+            height: 50px; 
         }
-        #prev-header {
-            text-align: center;
+
+        /* Print Styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                height: auto;
+                overflow: visible;
+            }
+
+            .print {
+                display: block; /* Stack elements for print */
+                height: auto; 
+            }
+
+            .preview {
+                border: none; 
+                margin: 0; 
+                padding: 0; 
+                /* Remove page break */
+            }
+
+            .buttons {
+                display: none; 
+            }
+
+            button {
+                display: none;
+            }
         }
     </style>
 
     <!-- BODY -->
     <div class="print">
-        <div class="preview">
-            <h2 id="prev-header">Certificate Preview</h2>
+        <div class="preview" id="certificate">
+            <div class="logo-container">
+                <img src="{% static 'images/logo-bfp.png' %}" alt="BFP_Logo">
+                <img src="{% static 'images/logo-bp.png' %}" alt="BFP_Logo">
+                <img src="{% static 'images/logo-emblem.png' %}" alt="BFP_Logo">
+            </div>
+            <div class="headers">
+                <p>Republic of the Philippines</p>
+                <p>Department of Interior and Local Government</p>
+                <p class="headerbold">BUREAU OF FIRE PROTECTION</p>
+                <p class="headerbold">CAGAYAN DE ORO FIRE DISTRICT OFFICE- REGION 10</p>
+                <p>Capt. Vicente Roa St., Cagayan de Oro City</p>
+                <p>Email Add: <span>cofdpersec24v@gmail.com</span></p>
+            </div>
+            <br><br>
+            <h2 id="prev-header">CERTIFICATION</h2>
             <p id="entered-credentials"></p>
+            <div class="signature">
+                <strong><p>District Fire Marshal</p></strong>
+            </div>
         </div>
 
         <div class="buttons">
             <button onclick="printCert()">Print</button>
-            <button>Download</button>
-            <button>Cancel</button>
+            <button onclick="downloadCert()">Download</button>
+            <a href="{% url 'dashboard' %}"><button>Cancel</button></a>
+
         </div>
+    
     </div>
-
-    <!-- Prev page -->
-    <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
-
-    <br><br>
-
-    <!-- Temporary Logout -->
-    <a href="{% url 'home' %}"><button>Logout</button></a>
 
     <!-- SCRIPTS -->
     <script>
@@ -93,7 +192,6 @@
 
             if (certType === "ojt") {
                 let studentName = localStorage.getItem("studentName") || "________";
-                // let venue = localStorage.getItem("venue") || "________";
                 let course = localStorage.getItem("course") || "________";
                 let school = localStorage.getItem("school") || "________";
                 let renderTime = localStorage.getItem("renderTime") || "________";
@@ -101,7 +199,7 @@
                 let dateEnded = formatDate(localStorage.getItem("dateEnded"), false);
                 let dateIssued = formatDate(localStorage.getItem("dateIssued"), true);
 
-                certText = `THIS IS TO CERTIFY that 
+                certText = `<strong>THIS IS TO CERTIFY</strong> that 
                 <strong>${studentName}</strong>, an 
                 <strong>${course}</strong> student from 
                 <strong>${school}</strong>, rendered On-the-Job Training (OJT) for 
@@ -117,12 +215,11 @@
                 let purpose = localStorage.getItem("purpose") || "________";
                 
                 let personnel = (localStorage.getItem("personnel") || "________").replace(/\n/g, "<br>");
-                // let personnel = localStorage.getItem("personnel") || "________";
                 
                 let duration = formatDate(localStorage.getItem("duration"), false);
                 let dateIssued = formatDate(localStorage.getItem("dateIssued"), true);
 
-                certText = `THIS IS TO CERTIFY that the following personnel of  
+                certText = `<strong>THIS IS TO CERTIFY</strong> that the following personnel of  
                 <strong>${station || "________"}</strong> appeared to this office purposely to  
                 <strong>${purpose || "________"}</strong> on  
                 <strong>${duration || "________"}</strong> at <strong>Cagayan de Oro Fire District, 
@@ -138,6 +235,45 @@
 
         function printCert() {
             window.print();
+        }
+
+        // MAS CHADA MAG DOWNLOAD SA PRINT NA BUTTON BRUH
+        // DOWNLOAD FUNCTION | TEMPORARY
+        function downloadCert() {
+            // Access jsPDF directly from the window object
+            const { jsPDF } = window.jspdf; // Correctly access jsPDF
+            const doc = new jsPDF();
+
+            const certificateContent = document.getElementById("certificate");
+
+            // Use html2canvas to render the HTML content
+            html2canvas(certificateContent, {
+                useCORS: true, // Enable cross-origin image loading
+                allowTaint: true // Allow tainted images
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 190; // Set the width of the image
+                const pageHeight = doc.internal.pageSize.height;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+
+                let position = 0;
+
+                // Add the image to the PDF
+                doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                doc.save('certificate.pdf');
+            }).catch(err => {
+                console.error('Error generating PDF:', err);
+            });
         }
 
     </script>
