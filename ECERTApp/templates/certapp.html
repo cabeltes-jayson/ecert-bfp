@@ -12,9 +12,9 @@
         <label>Duration:</label>
         <input type="date" id="duration" placeholder="Enter Duration" oninput="updatePreview()">
         <label>Personnel:</label>
-        <textarea id="personnel" placeholder="Enter Personnel" oninput="updatePreview()"></textarea>
+        <textarea id="personnel" placeholder="Enter Personnel | One Per Line" oninput="updatePreview()"></textarea>
         <label>Date Issued:</label>
-        <input type="date" id="date-issued" oninput="updatePreview()">
+        <input type="date" id="dateIssued" oninput="updatePreview()">
         <br>
         <button id="submit">Submit</button>
     </form>
@@ -22,19 +22,21 @@
     <br>
 
     <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
+    <button id="clear-form">Clear Form</button> 
     <a href="{% url 'home' %}"><button>Logout</button></a>
 {% endblock %}
 
 {% block preview %}
-    <p>THIS IS TO CERTIFY that the following personnel of 
+    <h3 id="preview-header">CERTIFICATE OF APPEARANCE</h3>
+    <p style="text-indent: 80px;">THIS IS TO CERTIFY that the following personnel of 
         <strong><span id="preview-station">________</span></strong> appeared to this office purposely to 
         <strong><span id="preview-purpose">________</span></strong> on
         <strong><span id="preview-duration">________</span></strong> at 
         <strong>Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City</strong>, to wit:
     </p>
     <strong><p id="preview-personnel">[Enter Personnel]</p></strong>
-    <p>This certification is being issued for whatever purpose it may serve.</p>
-    <p>Issued this <strong><span id="preview-date-issued">________</span></strong> at the Office of the District Fire Marshal,
+    <p style="text-indent: 80px;">This certification is being issued for whatever purpose it may serve.</p>
+    <p style="text-indent: 80px;">Issued this <strong><span id="preview-dateIssued">________</span></strong> at the Office of the District Fire Marshal,
         Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.
     </p>
     <div class="signature">
@@ -75,7 +77,7 @@
         document.getElementById("preview-purpose").textContent = document.getElementById("purpose").value || "________";
         document.getElementById("preview-personnel").innerHTML = document.getElementById("personnel").value.replace(/\n/g, "<br>") || "[Enter Personnel]";
         document.getElementById("preview-duration").textContent = formatDate(document.getElementById("duration").value, false);
-        document.getElementById("preview-date-issued").textContent = formatDate(document.getElementById("date-issued").value, true);
+        document.getElementById("preview-dateIssued").textContent = formatDate(document.getElementById("dateIssued").value, true);
     }
 
     // SUBMIT TO PRINT
@@ -86,9 +88,38 @@
         localStorage.setItem("purpose", document.getElementById("purpose").value);
         localStorage.setItem("duration", document.getElementById("duration").value);
         localStorage.setItem("personnel", document.getElementById("personnel").value);
-        localStorage.setItem("dateIssued", document.getElementById("date-issued").value);
+        localStorage.setItem("dateIssued", document.getElementById("dateIssued").value);
+        localStorage.setItem("previousPage", "certapp"); 
 
         window.location.href = "{% url 'print' %}";
+    });
+
+    // Populate form data from localStorage
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("station").value = localStorage.getItem("station") || "";
+        document.getElementById("purpose").value = localStorage.getItem("purpose") || "";
+        document.getElementById("personnel").value = localStorage.getItem("personnel") || "";
+        document.getElementById("duration").value = localStorage.getItem("duration") || "";
+        document.getElementById("dateIssued").value = localStorage.getItem("dateIssued") || "";
+        updatePreview();
+    });
+
+    // CLEAR FORM FUNCTION
+    document.getElementById("clear-form").addEventListener("click", function() {
+        // Clear form fields
+        document.getElementById("station").value = "";
+        document.getElementById("purpose").value = "";
+        document.getElementById("personnel").value = "";
+        document.getElementById("duration").value = "";
+        document.getElementById("dateIssued").value = "";
+        updatePreview();
+
+        // Clear localStorage entries
+        localStorage.removeItem("station");
+        localStorage.removeItem("purpose");
+        localStorage.removeItem("personnel");
+        localStorage.removeItem("duration");
+        localStorage.removeItem("dateIssued");
     });
 </script>
 {% endblock %}

@@ -6,39 +6,41 @@
     <h3>ENTER OJT DETAILS</h3>
     <form>
         <label>Student Name:</label>
-        <input type="text" id="student-name" placeholder="Enter Student Name" oninput="updatePreview()">
+        <input type="text" id="studentName" placeholder="Enter Student Name" oninput="updatePreview()">
         <label>Course:</label>
         <input type="text" id="course" placeholder="Enter Course" oninput="updatePreview()">
         <label>School:</label>
         <input type="text" id="school" placeholder="Enter School" oninput="updatePreview()">
         <label>Render Time:</label>
-        <input type="text" id="render-time" placeholder="Enter Render Time" oninput="updatePreview()">
+        <input type="text" id="renderTime" placeholder="Enter Render Time" oninput="updatePreview()">
         <h5>Date & Time</h5>
         <label>Date Started:</label>
-        <input type="date" id="date-started" oninput="updatePreview()">
+        <input type="date" id="dateStarted" oninput="updatePreview()">
         <label>Date Ended:</label>
-        <input type="date" id="date-ended" oninput="updatePreview()">
+        <input type="date" id="dateEnded" oninput="updatePreview()">
         <label>Date Issued:</label>
-        <input type="date" id="date-issued" oninput="updatePreview()">
+        <input type="date" id="dateIssued" oninput="updatePreview()">
         <button id="submit">Submit</button>
     </form>
 
     <br>
 
     <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
+    <button id="clear-form">Clear Form</button>
     <a href="{% url 'home' %}"><button>Logout</button></a>
 {% endblock %}
 
 {% block preview %}
-    <p><strong>THIS IS TO CERTIFY</strong> that <strong><span id="preview-name">________</span></strong> an 
+<h3 id="preview-header">CERTIFICATE OF OJT</h3>
+    <p style="text-indent: 80px;"><strong>THIS IS TO CERTIFY</strong> that <strong><span id="preview-studentName">________</span></strong> an 
         <strong><span id="preview-course">________</span></strong> student from 
         <strong><span id="preview-school">________</span></strong> rendered On-the-Job Training (OJT) with 
-        <strong><span id="preview-render-time">________</span></strong> <strong>hours</strong> in this office from 
-        <strong><span id="preview-date-started">________</span></strong> – 
-        <strong><span id="preview-date-ended">________</span></strong>.
+        <strong><span id="preview-renderTime">________</span></strong> <strong>hours</strong> in this office from 
+        <strong><span id="preview-dateStarted">________</span></strong> – 
+        <strong><span id="preview-dateEnded">________</span></strong>.
     </p>
-    <p>This certification is being issued for whatever purpose it may serve.</p>
-    <p>Issued this <strong><span id="preview-date-issued">________</span></strong> at the 
+    <p style="text-indent: 80px;">This certification is being issued for whatever purpose it may serve.</p>
+    <p style="text-indent: 80px;">Issued this <strong><span id="preview-dateIssued">________</span></strong> at the 
         Office of the District Fire Marshal, Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.
     </p>
     <div class="signature">
@@ -75,28 +77,63 @@
 
     // PREVIEW FUNCTION
     function updatePreview() {
-        document.getElementById("preview-name").textContent = document.getElementById("student-name").value || "________";
+        document.getElementById("preview-studentName").textContent = document.getElementById("studentName").value || "________";
         document.getElementById("preview-course").textContent = document.getElementById("course").value || "________";
         document.getElementById("preview-school").textContent = document.getElementById("school").value || "________";
-        document.getElementById("preview-render-time").textContent = document.getElementById("render-time").value || "________";
-        document.getElementById("preview-date-started").textContent = formatDate(document.getElementById("date-started").value, false);
-        document.getElementById("preview-date-ended").textContent = formatDate(document.getElementById("date-ended").value, false);
-        document.getElementById("preview-date-issued").textContent = formatDate(document.getElementById("date-issued").value, true);
+        document.getElementById("preview-renderTime").textContent = document.getElementById("renderTime").value || "________";
+        document.getElementById("preview-dateStarted").textContent = formatDate(document.getElementById("dateStarted").value, false);
+        document.getElementById("preview-dateEnded").textContent = formatDate(document.getElementById("dateEnded").value, false);
+        document.getElementById("preview-dateIssued").textContent = formatDate(document.getElementById("dateIssued").value, true);
     }
 
     // SUBMIT TO PRINT FUNCTION
     document.getElementById("submit").addEventListener("click", function(event) {
         event.preventDefault();
         localStorage.setItem("certType", "ojt");
-        localStorage.setItem("studentName", document.getElementById("student-name").value);
+        localStorage.setItem("studentName", document.getElementById("studentName").value);
         localStorage.setItem("course", document.getElementById("course").value);
         localStorage.setItem("school", document.getElementById("school").value);
-        localStorage.setItem("renderTime", document.getElementById("render-time").value);
-        localStorage.setItem("dateStarted", document.getElementById("date-started").value);
-        localStorage.setItem("dateEnded", document.getElementById("date-ended").value);
-        localStorage.setItem("dateIssued", document.getElementById("date-issued").value);
+        localStorage.setItem("renderTime", document.getElementById("renderTime").value);
+        localStorage.setItem("dateStarted", document.getElementById("dateStarted").value);
+        localStorage.setItem("dateEnded", document.getElementById("dateEnded").value);
+        localStorage.setItem("dateIssued", document.getElementById("dateIssued").value);
+        localStorage.setItem("previousPage", "certojt"); 
 
         window.location.href = "{% url 'print' %}";
+    });
+
+    // Populate form data from localStorage
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("studentName").value = localStorage.getItem("studentName") || "";
+        document.getElementById("course").value = localStorage.getItem("course") || "";
+        document.getElementById("school").value = localStorage.getItem("school") || "";
+        document.getElementById("renderTime").value = localStorage.getItem("renderTime") || "";
+        document.getElementById("dateStarted").value = localStorage.getItem("dateStarted") || "";
+        document.getElementById("dateEnded").value = localStorage.getItem("dateEnded") || "";
+        document.getElementById("dateIssued").value = localStorage.getItem("dateIssued") || "";
+        updatePreview();
+    });
+
+    // CLEAR FORM FUNCTION
+    document.getElementById("clear-form").addEventListener("click", function() {
+        // Clear form fields
+        document.getElementById("studentName").value = "";
+        document.getElementById("course").value = "";
+        document.getElementById("school").value = "";
+        document.getElementById("renderTime").value = "";
+        document.getElementById("dateStarted").value = "";
+        document.getElementById("dateEnded").value = "";
+        document.getElementById("dateIssued").value = "";
+        updatePreview();
+
+        // Clear localStorage entries
+        localStorage.removeItem("studentName");
+        localStorage.removeItem("course");
+        localStorage.removeItem("school");
+        localStorage.removeItem("renderTime");
+        localStorage.removeItem("dateStarted");
+        localStorage.removeItem("dateEnded");
+        localStorage.removeItem("dateIssued");
     });
 </script>
 {% endblock %}
