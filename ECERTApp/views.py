@@ -13,7 +13,7 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-            messages.success(request, "Login successful!")
+            messages.success(request, f"Welcome back, {user.firstname}!")
             return redirect("dashboard")
         else:
             messages.error(request, "Invalid username or password")
@@ -29,39 +29,40 @@ def user_logout(request):
 def home(request):
     return render(request, 'home.html')
 
-def user_signup(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        confirm_password = request.POST.get("confirm_password")
-        firstname = request.POST.get("first_name")
-        middlename = request.POST.get("middle_name")
-        lastname = request.POST.get("last_name")
-        email_address = request.POST.get("email")
-        contact_number = request.POST.get("contact_number")
 
-        if password != confirm_password:
-            messages.error(request, "Passwords do not match!")
-            return redirect("signup")
+# def user_signup(request):
+#     if request.method == "POST":
+#         username = request.POST.get("username")
+#         password = request.POST.get("password")
+#         confirm_password = request.POST.get("confirm_password")
+#         firstname = request.POST.get("first_name")
+#         middlename = request.POST.get("middle_name")
+#         lastname = request.POST.get("last_name")
+#         email_address = request.POST.get("email")
+#         contact_number = request.POST.get("contact_number")
 
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists!")
-            return redirect("signup")
+#         if password != confirm_password:
+#             messages.error(request, "Passwords do not match!")
+#             return redirect("signup")
 
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-            firstname=firstname,
-            middlename=middlename if middlename else None,
-            lastname=lastname,
-            email_address=email_address,
-            contact_number=contact_number
-        )
+#         if User.objects.filter(username=username).exists():
+#             messages.error(request, "Username already exists!")
+#             return redirect("signup")
 
-        messages.success(request, "Account created successfully! You can now log in.")
-        return redirect("login")
+#         user = User.objects.create_user(
+#             username=username,
+#             password=password,
+#             firstname=firstname,
+#             middlename=middlename if middlename else None,
+#             lastname=lastname,
+#             email_address=email_address,
+#             contact_number=contact_number
+#         )
 
-    return render(request, "auth/signup.html")
+#         messages.success(request, "Account created successfully! You can now log in.")
+#         return redirect("login")
+
+#     return render(request, "auth/signup.html")
 
 
 def dashboard(request):

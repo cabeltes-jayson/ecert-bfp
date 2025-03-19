@@ -16,27 +16,34 @@
         .container {
             display: flex;
             width: 100%;
+            box-sizing: border-box;
+            background-image: url("{% static 'images/bg.png' %}");
+            background-size: cover;
+            background-position: center;
+            scrollbar-width: none; /* For Firefox */
+            -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 100vh;
             /* min-height: 100vh; */
             /* height: 100vh; */
+            justify-content: center;
         }
 
         .container .credentials {
             flex: 1;
             padding: 20px;
             border-right: 2px solid black;
-            box-sizing: border-box;
-            background-image: url("{% static 'images/bg.png' %}");
-            background-size: cover;
-            background-position: center;
-            text-align: justify;
-            height: 100vh;
             overflow-y: auto;
             overflow-x: hidden;
-            scrollbar-width: none; /* For Firefox */
-            -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+            background-color: rgba(255, 255, 255, 0.801); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for a modal-like effect */
+            max-width: 600px; 
+            margin: 10px;
         }
 
-        .container .credentials::-webkit-scrollbar { 
+        .container ::-webkit-scrollbar { 
             display: none;  /* For Chrome, Safari, and Opera */
         }
 
@@ -71,7 +78,7 @@
         }
 
         .credentials h3, label {
-            color: white;
+            color: black;
             font-size: 20px;
         }
 
@@ -80,6 +87,17 @@
             align-self: center;
             padding: 5px 20px;
             font-size: 15px;
+        }
+
+        .personnel-input {
+            align-items: center;
+            gap: 10px; /* Adjust the spacing between elements */
+        }
+
+        .personnel-input input.personnel {
+            flex: none; /* Prevent the input field from stretching */
+            width: 200px; /* Set a fixed width for the input field */
+            box-sizing: border-box; /* Ensure padding doesn't affect the width */
         }
 
         .buttonses {

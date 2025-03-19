@@ -35,20 +35,38 @@
         text-decoration: none;
         color: black;
     }
+    .alert-success {
+        background-color: #d4edda; /* Light green background */
+        color: #155724; /* Dark green text */
+        border: 1px solid #c3e6cb; /* Green border */
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .header-text {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+    }
     </style>
 
     <!-- BODY -->
-    <h1>E-Certificate Dashboard</h1>
-    <p>Make every cert happen</p>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="header-text">
+        <h1>E-Certificate Dashboard</h1>
+        <p>Make every cert happen</p>
+    </div>
 
     <br>
-    
-    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-    <h2>Welcome to the Dashboard, {{ request.user.firstname }}!</h2>
 
     <!-- 2 certs, butngan ranig image puhon instead of text -->
     <div class="container">
