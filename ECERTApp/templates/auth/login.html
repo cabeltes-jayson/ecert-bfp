@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | BFP E-Certificate{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        color: rgb(255, 255, 255);
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 10px;
+        color: rgb(0, 0, 0);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .alert-center2 {
+        text-align: center;
+        color: red;
+    }
+
+    .alert-center {
+        text-align: center;
+        color: green;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4" >
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>Login</h2>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-center2">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" name="username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </form>
+
+                    <p class="text-center mt-3">
+                        Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,24 +1,169 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}PRINT CERTIFICATE{% endblock %}
 
 {% block content %}
+    <!-- PRINT & DOWNLOAD LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.3/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <!-- STYLES -->
     <style>
+        html, body {
+            margin-top: 0;
+            padding-top: 0;
+        }
         .print {
             display: flex;
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
+            font-family: 'Times New Roman', Times, serif;
+            margin-top: 0;
+            padding-top: 0;
         }
 
-        .preview {
+        .print .preview {
             flex: 2;
-            border: 2px solid black;
             padding: 20px;
             margin: 10px;
-            background: #f8f9fa;
+            background: #ffffff;
+            position: relative;
+            box-sizing: border-box;
+            border: 2px solid black;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin-top: 0;
+            padding-top: 0;
         }
 
-        .buttons {
+        .print .preview .zoomout {
+            transform: scale(1);
+            transform-origin: top center;
+            height: 100%;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .print .preview .zoomout .header {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .print .preview .zoomout .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .print .preview .zoomout .logo-container img {
+            height: 130px;
+            width: 130px;
+        }
+
+        .print .preview .zoomout .logo-container #emblem {
+            height: 130px;
+            width: 100px;
+            /* margin-left: 20px; */
+            margin-right: 30px;
+        }
+
+        .print .preview .zoomout .headers p {
+            font-size: 110%;
+            text-align: center;
+            margin: 0;
+            line-height: 1;
+            color: black;
+        }
+
+        .print .preview .zoomout .headers .headerbold {
+            font-weight: bold;
+            font-size: 110%;
+        }
+
+        .print .preview .zoomout .headers span {
+            text-decoration: underline; 
+            color: blue;
+        }
+
+        /* mao ning CERTIFICATION */
+        @font-face {
+            font-family: 'Eras Bold ITC';
+            src: url("{% static 'fonts/eras-bold-itc.ttf' %}") format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        .print .preview .zoomout #headerText {
+            font-size: 45px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Eras Bold ITC', sans-serif;
+        }
+
+        /* THIS IS TO CERTIFY ... */
+        .print .preview .zoomout #entered-credentials {
+            margin-left: 100px;
+            margin-right: 100px;
+            font-size: 30px;
+            line-height: 1;
+        }
+
+        .print .preview .zoomout #entered-credentials p {
+            text-align: justify;
+            font-family: Arial, sans-serif;
+        }
+
+        .print .preview .zoomout p {
+            text-align: center;
+        }
+
+        /* pirma */
+        .print .preview .zoomout .signature {
+            text-align: right; 
+            margin-top: 150px;
+            width: 100%;
+            margin-bottom: 70%;
+            padding-right: 100px;
+        }
+
+        .print .preview .zoomout .signature .signature-content {
+            display: inline-block;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .print .preview .zoomout .signature .signature-content p {
+            margin: 0;
+            font-size: 30px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+
+        .print .preview .zoomout .signature .signature-content .spaced {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .print .preview .zoomout .signature .signature-content strong p {
+            border-top: 1px solid black; 
+            /*width: calc(100% + 50px); Adjust the width to be a bit longer than the text above */
+        }
+
+        .print .preview .zoomout .footer img {
+            width: 50%;
+            height: auto;
+        }
+
+        .print .preview .zoomout .footer {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .print .buttons {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -27,39 +172,146 @@
             gap: 15px;
         }
 
-        button {
-            font-size: 16px;
-            cursor: pointer;
+        .print .buttons button {
+            width: 200px; 
+            height: 50px; 
         }
-        #prev-header {
-            text-align: center;
+
+        .print .buttons .zooms {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .print .buttons .zoom-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Print Styles */
+        @media print {
+
+            /* BASIN MAGAMIT SA FUTURE OR IDK */
+            body {
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            /* .print {
+                display: block;
+                height: auto; 
+            } */
+
+            .print .buttons {
+                display: none; 
+            }
+
+            .print .buttons button {
+                display: none;
+            }
+
+            .print .preview {
+                border: none; 
+                overflow: hidden;
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            .print {
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            .print .preview .zoomout {
+                transform: scale(1) !important; /* Reset scale for printing */
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            .print .preview .zoomout .header {
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            .print .preview .footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+            }
         }
     </style>
 
     <!-- BODY -->
     <div class="print">
         <div class="preview">
-            <h2 id="prev-header">Certificate Preview</h2>
-            <p id="entered-credentials"></p>
+            <div class="zoomout">
+                <div class="header">
+                    <div class="logo-container">
+                        <img src="{% static 'images/logo-bfp.png' %}" alt="BFP_Logo">
+                        <img src="{% static 'images/logo-bp.png' %}" alt="BFP_Logo">
+                        <img id="emblem" src="{% static 'images/logo-emblem.png' %}" alt="BFP_Logo">
+                    </div>
+        
+                    <div class="headers">
+                        <p>Republic of the Philippines</p>
+                        <p>Department of Interior and Local Government</p>
+                        <p class="headerbold">BUREAU OF FIRE PROTECTION</p>
+                        <p class="headerbold">REGION 10</p>
+                        <p>CAGAYAN DE ORO FIRE DISTRICT OFFICE</p>
+                        <p>Capt. Vicente Roa St., Cagayan de Oro City</p>
+                        <p>Email Add: <span>cofdpersec24v@gmail.com</span></p>
+                    </div>
+                </div>
+    
+                <br><br>
+    
+                <h2 id="headerText"></h2>
+    
+                <br>
+                
+                <p id="entered-credentials"></p>
+    
+                <div class="signature">
+                    <div class="signature-content">
+                        <p>REXCLIBURN L SALVAÑA</p>
+                        <p class="spaced">
+                            <span>SSUPT</span>
+                            <span>(DSC)</span>
+                            <span>BFP</span>
+                        </p>
+                        <strong><p>District Fire Marshal</p></strong>
+                    </div>
+                </div>
+    
+                <div class="footer">
+                    <img src="{% static 'images/bfp-footer.png' %}" alt="BFP_Footer">
+                </div>
+            </div>
         </div>
 
         <div class="buttons">
+            <div class="zooms">
+                <button class="zoom-button" onclick="zoomOut()">-</button>
+                <button class="zoom-button" onclick="zoomIn()">+</button>
+            </div>
             <button onclick="printCert()">Print</button>
-            <button>Download</button>
-            <button>Cancel</button>
+            <button onclick="downloadCert()">Download</button>
+            <button onclick="cancelEdit()">Cancel</button>
         </div>
     </div>
 
-    <!-- Prev page -->
-    <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
-
-    <br><br>
-
-    <!-- Temporary Logout -->
-    <a href="{% url 'home' %}"><button>Logout</button></a>
-
     <!-- SCRIPTS -->
     <script>
+        // VOWELS
+        function getArticle(word) {
+            const vowels = ['a', 'e', 'i', 'o', 'u'];
+            return vowels.includes(word[0].toLowerCase()) ? 'an' : 'a';
+        }
+        
         // CERTS
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -81,7 +333,8 @@
                         default: return "th";
                     }
                 }
-                return `${day}${getOrdinalSuffix(day)} of ${month} ${year}`;
+                return `<strong><i><u>${day}<sup>${getOrdinalSuffix(day)}</sup></u></i></strong> day of 
+                <strong><i><u>${month}</u></i></strong> <strong><i><u>${year}</u></i></strong>`;
             } else {
                 return `${day} ${month} ${year}`;
             }
@@ -90,10 +343,11 @@
             let certType = localStorage.getItem("certType");
 
             let certText = "";
+            let headerText = "";
 
             if (certType === "ojt") {
+                headerText = "CERTIFICATION";
                 let studentName = localStorage.getItem("studentName") || "________";
-                // let venue = localStorage.getItem("venue") || "________";
                 let course = localStorage.getItem("course") || "________";
                 let school = localStorage.getItem("school") || "________";
                 let renderTime = localStorage.getItem("renderTime") || "________";
@@ -101,44 +355,68 @@
                 let dateEnded = formatDate(localStorage.getItem("dateEnded"), false);
                 let dateIssued = formatDate(localStorage.getItem("dateIssued"), true);
 
-                certText = `THIS IS TO CERTIFY that 
-                <strong>${studentName}</strong>, an 
+                let article = getArticle(course);
+
+                certText = `<strong><p style="text-indent: 80px;">THIS IS TO CERTIFY</strong> that 
+                <strong>${studentName}</strong>, ${article} 
                 <strong>${course}</strong> student from 
                 <strong>${school}</strong>, rendered On-the-Job Training (OJT) for 
-                <strong>${renderTime}</strong> in this office from 
-                <strong>${dateStarted}</strong> – <strong>${dateEnded}</strong>.<br><br>
-                This certification is being issued for whatever purpose it may serve.<br><br>
-                Issued this <strong>${dateIssued}</strong> at the Office of the District Fire Marshal, 
-                Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.`;
+                <strong>${renderTime}</strong> hours in this office from 
+                <strong>${dateStarted}</strong> – <strong>${dateEnded}</strong>.</p>
+                <br><p style="text-indent: 80px;">This certification is being issued for whatever purpose it may serve.</p>
+                <br><p style="text-indent: 80px;">Issued this ${dateIssued} at the <strong>Office of the District Fire Marshal.</strong></p>`;
             }
 
             if (certType === "app") {
+                headerText = "CERTIFICATE OF APPEARANCE";
                 let station = localStorage.getItem("station") || "________";
                 let purpose = localStorage.getItem("purpose") || "________";
                 
                 let personnel = (localStorage.getItem("personnel") || "________").replace(/\n/g, "<br>");
-                // let personnel = localStorage.getItem("personnel") || "________";
                 
                 let duration = formatDate(localStorage.getItem("duration"), false);
                 let dateIssued = formatDate(localStorage.getItem("dateIssued"), true);
 
-                certText = `THIS IS TO CERTIFY that the following personnel of  
+                certText = `<strong><p style="text-indent: 80px;">THIS IS TO CERTIFY</strong> that 
+                the following personnel of
                 <strong>${station || "________"}</strong> appeared to this office purposely to  
                 <strong>${purpose || "________"}</strong> on  
                 <strong>${duration || "________"}</strong> at <strong>Cagayan de Oro Fire District, 
-                    Captain Vicente Roa St., Cagayan de Oro City</strong>, to wit:<br><br>  
-                <strong>${personnel || "________"}</strong><br><br>  
-                This certification is being issued for whatever purpose it may serve.<br><br>  
-                Issued this <strong>${dateIssued || "________"}</strong> at the Office of the District Fire Marshal,  
-                Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.`;
+                    Captain Vicente Roa St., Cagayan de Oro City</strong>, to wit:</p>
+                <strong>${personnel || "________"}</strong><br>
+                <p style="text-indent: 80px;">This certification is being issued for whatever purpose it may serve.</p>  
+                <p style="text-indent: 80px;">Issued this <strong>${dateIssued || "________"}</strong> at the Office of the District Fire Marshal,  
+                Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.</p>`;
             }
 
             document.getElementById("entered-credentials").innerHTML = certText;
+            document.getElementById("headerText").innerText = headerText;
         });
 
         function printCert() {
             window.print();
         }
 
+        function cancelEdit() {
+            const previousPage = localStorage.getItem("previousPage");
+            if (previousPage) {
+                window.location.href = `/ECERTApp/${previousPage}/`;
+            } else {
+                window.history.back();
+            }
+        }
+
+        // Zoom functions
+        let scale = 1;
+
+        function zoomIn() {
+            scale += 0.1;
+            document.querySelector('.zoomout').style.transform = `scale(${scale})`;
+        }
+
+        function zoomOut() {
+            scale -= 0.1;
+            document.querySelector('.zoomout').style.transform = `scale(${scale})`;
+        }
     </script>
 {% endblock %}

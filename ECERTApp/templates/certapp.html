@@ -1,175 +1,127 @@
-{% extends "base.html" %}
+{% extends "basecert.html" %}
 
 {% block title %}CERTIFICATE OF APPEARANCE{% endblock %}
 
-{% block content %}
-    <!-- STYLES -->
-    <style>
-        .container {
-            display: flex;
-            /* height: 100vh; */
-        }
+{% block credentials %}
+    <h3>ENTER CREDENTIALS</h3>
+    <form>
+        <label>Station:</label>
+        <input type="text" id="station" placeholder="Enter Station" oninput="updatePreview()">
+        <label>Purpose:</label>
+        <input type="text" id="purpose" placeholder="Enter Purpose" oninput="updatePreview()">
+        <label>Duration:</label>
+        <input type="date" id="duration" placeholder="Enter Duration" oninput="updatePreview()">
+        <label>Personnel:</label>
+        <textarea id="personnel" placeholder="Enter Personnel | One Per Line" oninput="updatePreview()"></textarea>
+        <label>Date Issued:</label>
+        <input type="date" id="dateIssued" oninput="updatePreview()">
+        <br>
+        <button id="submit">Submit</button>
+    </form>
 
-        .credentials {
-            flex: 1;
-            padding: 20px;
-            border-right: 2px solid black;
-        }
+    <br>
 
-        .preview {
-            flex: 1;
-            padding: 20px;
-            background: #f8f9fa;
-            position: relative;
-        }
-
-        .preview p {
-            text-align: justify;
-        }
-
-        #preview-header {
-            text-align: center;
-        }
-
-        .signature {
-            text-align: right; 
-            position: absolute;  
-            right: 20px;  
-            bottom: 20px; 
-            width: 200px; 
-        }
-
-        .signature p {
-            border-top: 1px solid black; 
-            margin: 0;
-            /* width: 100%; */
-            text-align: center;
-        }
-    </style>
-
-    <!-- BODY -->
-    <div class="container">
-
-        <!-- Left Side: Enter Credentials -->
-        <div class="credentials">
-
-            <h3>Enter Credentials</h3>
-
-            <form>
-                <label>Station:</label>
-                <input type="text" id="station" placeholder="Enter Station" oninput="updatePreview()">
-
-                <br>
-
-                <label>Purpose:</label>
-                <input type="text" id="purpose" placeholder="Enter Purpose" oninput="updatePreview()">
-
-                <br>
-
-                <label>Duration:</label>
-                <input type="date" id="duration" placeholder="Enter Duration" oninput="updatePreview()">
-
-                <br>
-
-                <label>Personnel:</label>
-                <textarea id="personnel" placeholder="Enter Personnel" oninput="updatePreview()"></textarea>
-
-                <br>
-
-                <label>Date Issued:</label>
-                <input type="date" id="date-issued" oninput="updatePreview()">
-            </form>
-
-            <button id="submit">Submit</button>
-        </div>
-
-        <!-- Right Side: Certificate Preview -->
-        <div class="preview">
-
-            <h2 id="preview-header">CERTIFICATE OF APPEARANCE</h2>
-
-            <p>THIS IS TO CERTIFY that the following personnel of 
-                <strong><span id="preview-station">________</span></strong> appeared to this office purposely to 
-                <strong><span id="preview-purpose">________</span></strong> on
-                <strong><span id="preview-duration">________</span></strong> at 
-                <strong>Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City</strong>, to wit:
-            </p>
-
-            <strong><p id="preview-personnel">[Enter Personnel]</p></strong>
-
-            <p>This certification is being issued for whatever purpose it may serve.</p>
-
-            <p>Issued this <strong><span id="preview-date-issued">________</span></strong> at the Office of the District Fire Marshal,
-                Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.
-            </p>
-
-            <br><br><br>
-
-            <div class="signature">
-                <strong><p>District Fire Marshal</p></strong>
-            </div>
-        </div>
-
+    <div class="buttonses">
+        <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
+        <button id="clear-form">Clear Form</button> 
+        <a href="{% url 'home' %}"><button>Logout</button></a>
     </div>
+{% endblock %}
 
-    <!-- Prev page -->
-    <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
+<!-- {% block preview %}
+    <h3 id="preview-header">CERTIFICATE OF APPEARANCE</h3>
+    <p style="text-indent: 80px;">THIS IS TO CERTIFY that the following personnel of 
+        <strong><span id="preview-station">________</span></strong> appeared to this office purposely to 
+        <strong><span id="preview-purpose">________</span></strong> on
+        <strong><span id="preview-duration">________</span></strong> at 
+        <strong>Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City</strong>, to wit:
+    </p>
+    <strong><p id="preview-personnel">[Enter Personnel]</p></strong>
+    <br><p style="text-indent: 80px;">This certification is being issued for whatever purpose it may serve.</p>
+    <br><p style="text-indent: 80px;">Issued this <strong><span id="preview-dateIssued">________</span></strong> at the Office of the District Fire Marshal,
+        Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.
+    </p>
+    <div class="signature">
+        <strong><p>District Fire Marshal</p></strong>
+    </div>
+{% endblock %} -->
 
-    <br><br>
+{% block scripts %}
+<script>
+    // DATE
+    function formatDate(inputDate, withSuffix = false) {
+        if (!inputDate) return "________";
 
-    <!-- Temporary Logout -->
-    <a href="{% url 'home' %}"><button>Logout</button></a>
+        let date = new Date(inputDate);
+        let day = date.getDate();
+        let month = date.toLocaleString("en-GB", { month: "long" });
+        let year = date.getFullYear();
 
-    <!-- SCRIPTS -->
-    <script>
-        // DATE
-        function formatDate(inputDate, withSuffix = false) {
-            if (!inputDate) return "________";
-
-            let date = new Date(inputDate);
-            let day = date.getDate();
-            let month = date.toLocaleString("en-GB", { month: "long" });
-            let year = date.getFullYear();
-
-            if (withSuffix) {
-                function getOrdinalSuffix(n) {
-                    if (n > 3 && n < 21) return "th"; // Covers 11th to 20th
-                    switch (n % 10) {
-                        case 1: return "st";
-                        case 2: return "nd";
-                        case 3: return "rd";
-                        default: return "th";
-                    }
+        if (withSuffix) {
+            function getOrdinalSuffix(n) {
+                if (n > 3 && n < 21) return "th"; // Covers 11th to 20th
+                switch (n % 10) {
+                    case 1: return "st";
+                    case 2: return "nd";
+                    case 3: return "rd";
+                    default: return "th";
                 }
-                return `${day}${getOrdinalSuffix(day)} of ${month} ${year}`;
-            } else {
-                return `${day} ${month} ${year}`;
             }
+            return `${day}${getOrdinalSuffix(day)} of ${month} ${year}`;
+        } else {
+            return `${day} ${month} ${year}`;
         }
+    }
 
-        // PREVIEW FUNCTION
-        function updatePreview() {
-            document.getElementById("preview-station").textContent = document.getElementById("station").value || "________";
-            document.getElementById("preview-purpose").textContent = document.getElementById("purpose").value || "________";
+    // PREVIEW FUNCTION
+    // function updatePreview() {
+    //     document.getElementById("preview-station").textContent = document.getElementById("station").value || "________";
+    //     document.getElementById("preview-purpose").textContent = document.getElementById("purpose").value || "________";
+    //     document.getElementById("preview-personnel").innerHTML = document.getElementById("personnel").value.replace(/\n/g, "<br>") || "[Enter Personnel]";
+    //     document.getElementById("preview-duration").textContent = formatDate(document.getElementById("duration").value, false);
+    //     document.getElementById("preview-dateIssued").textContent = formatDate(document.getElementById("dateIssued").value, true);
+    // }
 
-            document.getElementById("preview-personnel").innerHTML = document.getElementById("personnel").value.replace(/\n/g, "<br>") || "[Enter Personnel]";
-            // document.getElementById("preview-personnel").textContent = document.getElementById("personnel").value || "[PERSONNEL]";
-            
-            document.getElementById("preview-duration").textContent = formatDate(document.getElementById("duration").value, false);
-            document.getElementById("preview-date-issued").textContent = formatDate(document.getElementById("date-issued").value, true);
-        }
+    // SUBMIT TO PRINT
+    document.getElementById("submit").addEventListener("click", function(event) {
+        event.preventDefault();
+        localStorage.setItem("certType", "app");
+        localStorage.setItem("station", document.getElementById("station").value);
+        localStorage.setItem("purpose", document.getElementById("purpose").value);
+        localStorage.setItem("duration", document.getElementById("duration").value);
+        localStorage.setItem("personnel", document.getElementById("personnel").value);
+        localStorage.setItem("dateIssued", document.getElementById("dateIssued").value);
+        localStorage.setItem("previousPage", "certapp"); 
 
-        // SUBMIT TO PRINT
-        document.getElementById("submit").addEventListener("click", function(event) {
-            event.preventDefault();
-            localStorage.setItem("certType", "app");
-            localStorage.setItem("station", document.getElementById("station").value);
-            localStorage.setItem("purpose", document.getElementById("purpose").value);
-            localStorage.setItem("duration", document.getElementById("duration").value);
-            localStorage.setItem("personnel", document.getElementById("personnel").value);
-            localStorage.setItem("dateIssued", document.getElementById("date-issued").value);
+        window.location.href = "{% url 'print' %}";
+    });
 
-            window.location.href = "{% url 'print' %}";
-        });
-    </script>
+    // Populate form data from localStorage
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("station").value = localStorage.getItem("station") || "";
+        document.getElementById("purpose").value = localStorage.getItem("purpose") || "";
+        document.getElementById("personnel").value = localStorage.getItem("personnel") || "";
+        document.getElementById("duration").value = localStorage.getItem("duration") || "";
+        document.getElementById("dateIssued").value = localStorage.getItem("dateIssued") || "";
+        updatePreview();
+    });
+
+    // CLEAR FORM FUNCTION
+    document.getElementById("clear-form").addEventListener("click", function() {
+        // Clear form fields
+        document.getElementById("station").value = "";
+        document.getElementById("purpose").value = "";
+        document.getElementById("personnel").value = "";
+        document.getElementById("duration").value = "";
+        document.getElementById("dateIssued").value = "";
+        updatePreview();
+
+        // Clear localStorage entries
+        localStorage.removeItem("station");
+        localStorage.removeItem("purpose");
+        localStorage.removeItem("personnel");
+        localStorage.removeItem("duration");
+        localStorage.removeItem("dateIssued");
+    });
+</script>
 {% endblock %}

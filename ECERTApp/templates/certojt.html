@@ -1,183 +1,145 @@
-{% extends "base.html" %}
+{% extends "basecert.html" %}
 
 {% block title %}CERTIFICATE OF OJT{% endblock %}
 
-{% block content %}
-    <!-- STYLES -->
-    <style>
-        .container {
-            display: flex;
-            /* height: 100vh; */
-        }
+{% block credentials %}
+    <h3>ENTER OJT DETAILS</h3>
+    <form>
+        <label>Student Name:</label>
+        <input type="text" id="studentName" placeholder="Enter Student Name" oninput="updatePreview()">
+        <label>Course:</label>
+        <input type="text" id="course" placeholder="Enter Course" oninput="updatePreview()">
+        <label>School:</label>
+        <input type="text" id="school" placeholder="Enter School" oninput="updatePreview()">
+        <label>Render Time:</label>
+        <input type="text" id="renderTime" placeholder="Enter Render Time" oninput="updatePreview()">
+        <h5>Date & Time</h5>
+        <label>Date Started:</label>
+        <input type="date" id="dateStarted" oninput="updatePreview()">
+        <label>Date Ended:</label>
+        <input type="date" id="dateEnded" oninput="updatePreview()">
+        <label>Date Issued:</label>
+        <input type="date" id="dateIssued" oninput="updatePreview()">
+        <button id="submit">Submit</button>
+    </form>
 
-        .credentials {
-            flex: 1;
-            padding: 20px;
-            border-right: 2px solid black;
-        }
+    <br>
 
-        .preview {
-            flex: 1;
-            padding: 20px;
-            background: #f8f9fa;
-            position: relative;
-        }
+    <div class="buttonses">
+        <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
+        <button id="clear-form">Clear Form</button> 
+        <a href="{% url 'home' %}"><button>Logout</button></a>
+    </div>
+{% endblock %}
 
-        .preview p {
-            text-align: justify;
-        }
-
-        #preview-header {
-            text-align: center;
-        }
-
-        .signature {
-            text-align: right; 
-            position: absolute;  
-            right: 20px;  
-            bottom: 20px; 
-            width: 200px; 
-        }
-
-        .signature p {
-            border-top: 1px solid black; 
-            margin: 0;
-            /* width: 100%; */
-            text-align: center;
-        }
-    </style>
-
-    <!-- BODY -->
-    <div class="container">
-
-        <!-- Left Side: Form -->
-        <div class="credentials">
-
-            <h3>Enter Credentials</h3>
-
-            <form>
-                <label>Student Name:</label>
-                <input type="text" id="student-name" placeholder="Enter Student Name" oninput="updatePreview()">
-
-                <br>
-
-                <label>Course:</label>
-                <input type="text" id="course" placeholder="Enter Course" oninput="updatePreview()">
-
-                <br>
-
-                <label>School:</label>
-                <input type="text" id="school" placeholder="Enter School" oninput="updatePreview()">
-
-                <br>
-
-                <label>Render Time:</label>
-                <input type="text" id="render-time" placeholder="Enter Render Time" oninput="updatePreview()">
-
-                <br><br>
-                <h5> Date & Time </h5>
-
-                <label>Date Started:</label>
-                <input type="date" id="date-started" oninput="updatePreview()">
-
-                <br>
-
-                <label>Date Ended:</label>
-                <input type="date" id="date-ended" oninput="updatePreview()">
-
-                <br>
-                
-                <label>Date Issued:</label>
-                <input type="date" id="date-issued" oninput="updatePreview()">
-            </form>
-
-            <button id="submit">Submit</button>
-        </div>
-
-        <!-- Right Side: Live Preview -->
-        <div class="preview">
-
-            <h2 id="preview-header">CERTIFICATE OF OJT</h2>
-
-            <p><strong>THIS IS TO CERTIFY</strong> that <strong><span id="preview-name">________</span></strong> an 
-                <strong><span id="preview-course">________</span></strong> student from 
-                <strong><span id="preview-school">________</span></strong> rendered On-the-Job Training (OJT) with 
-                <strong><span id="preview-render-time">________</span></strong> <strong>hours</strong> in this office from 
-                <strong><span id="preview-date-started">________</span></strong> – 
-                <strong><span id="preview-date-ended">________</span></strong>.
-            </p>
-
-            <p>This certification is being issued for whatever purpose it may serve.</p>
-
-            <p>Issued this <strong><span id="preview-date-issued">________</span></strong> at the 
-                Office of the District Fire Marshal, Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.
-            </p>
-            
-            <div class="signature">
-                <strong><p>Station Commander</p></strong>
-            </div>
+<!-- {% block preview %}
+<h3 id="preview-header">CERTIFICATION</h3>
+    <p style="text-indent: 80px;"><strong>THIS IS TO CERTIFY</strong> that <strong><span id="preview-studentName">________</span></strong> an 
+        <strong><span id="preview-course">________</span></strong> student from 
+        <strong><span id="preview-school">________</span></strong> rendered On-the-Job Training (OJT) with 
+        <strong><span id="preview-renderTime">________</span></strong> <strong>hours</strong> in this office from 
+        <strong><span id="preview-dateStarted">________</span></strong> – 
+        <strong><span id="preview-dateEnded">________</span></strong>.
+    </p>
+    <br><p style="text-indent: 80px;">This certification is being issued for whatever purpose it may serve.</p>
+    <br><p style="text-indent: 80px;">Issued this <strong><span id="preview-dateIssued">________</span></strong> at the 
+        Office of the District Fire Marshal, Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.
+    </p>
+    <div class="signature">
+        <div class="signature-content">
+            <p>REXCLIBURN SALVAÑA</p>
+            <p>SSUPT (DSC) BFP</p>
+            <strong><p>District Fire Marshal</p></strong>
         </div>
     </div>
+{% endblock %} -->
 
-    <!-- Prev page -->
-    <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
+{% block scripts %}
+<script>
+    // DATE
+    function formatDate(inputDate, withSuffix = false) {
+        if (!inputDate) return "________";
 
-    <br><br>
+        let date = new Date(inputDate);
+        let day = date.getDate();
+        let month = date.toLocaleString("en-GB", { month: "long" });
+        let year = date.getFullYear();
 
-    <!-- Temporary Logout -->
-    <a href="{% url 'home' %}"><button>Logout</button></a>
-
-    <!-- SCRIPTS -->
-    <script>
-        // DATE
-        function formatDate(inputDate, withSuffix = false) {
-            if (!inputDate) return "________";
-
-            let date = new Date(inputDate);
-            let day = date.getDate();
-            let month = date.toLocaleString("en-GB", { month: "long" });
-            let year = date.getFullYear();
-
-            if (withSuffix) {
-                function getOrdinalSuffix(n) {
-                    if (n > 3 && n < 21) return "th"; // Covers 11th to 20th
-                    switch (n % 10) {
-                        case 1: return "st";
-                        case 2: return "nd";
-                        case 3: return "rd";
-                        default: return "th";
-                    }
+        if (withSuffix) {
+            function getOrdinalSuffix(n) {
+                if (n > 3 && n < 21) return "th"; // Covers 11th to 20th
+                switch (n % 10) {
+                    case 1: return "st";
+                    case 2: return "nd";
+                    case 3: return "rd";
+                    default: return "th";
                 }
-                return `${day}${getOrdinalSuffix(day)} day of ${month} ${year}`;
-            } else {
-                return `${day} ${month} ${year}`;
             }
+            return `${day}${getOrdinalSuffix(day)} day of ${month} ${year}`;
+        } else {
+            return `${day} ${month} ${year}`;
         }
+    }
 
-        // PREVIEW FUNCTION
-        function updatePreview() {
-            document.getElementById("preview-name").textContent = document.getElementById("student-name").value || "________";
-            document.getElementById("preview-course").textContent = document.getElementById("course").value || "________";
-            document.getElementById("preview-school").textContent = document.getElementById("school").value || "________";
-            document.getElementById("preview-render-time").textContent = document.getElementById("render-time").value || "________";
-            document.getElementById("preview-date-started").textContent = formatDate(document.getElementById("date-started").value, false);
-            document.getElementById("preview-date-ended").textContent = formatDate(document.getElementById("date-ended").value, false);
-            document.getElementById("preview-date-issued").textContent = formatDate(document.getElementById("date-issued").value, true);
-        }
+    // PREVIEW FUNCTION
+    // function updatePreview() {
+    //     document.getElementById("preview-studentName").textContent = document.getElementById("studentName").value || "________";
+    //     document.getElementById("preview-course").textContent = document.getElementById("course").value || "________";
+    //     document.getElementById("preview-school").textContent = document.getElementById("school").value || "________";
+    //     document.getElementById("preview-renderTime").textContent = document.getElementById("renderTime").value || "________";
+    //     document.getElementById("preview-dateStarted").textContent = formatDate(document.getElementById("dateStarted").value, false);
+    //     document.getElementById("preview-dateEnded").textContent = formatDate(document.getElementById("dateEnded").value, false);
+    //     document.getElementById("preview-dateIssued").textContent = formatDate(document.getElementById("dateIssued").value, true);
+    // }
 
-        // SUBMIT TO PRINT FUNCTION
-        document.getElementById("submit").addEventListener("click", function(event) {
-            event.preventDefault();
-            localStorage.setItem("certType", "ojt");
-            localStorage.setItem("studentName", document.getElementById("student-name").value);
-            localStorage.setItem("course", document.getElementById("course").value);
-            localStorage.setItem("school", document.getElementById("school").value);
-            localStorage.setItem("renderTime", document.getElementById("render-time").value);
-            localStorage.setItem("dateStarted", document.getElementById("date-started").value);
-            localStorage.setItem("dateEnded", document.getElementById("date-ended").value);
-            localStorage.setItem("dateIssued", document.getElementById("date-issued").value);
+    // SUBMIT TO PRINT FUNCTION
+    document.getElementById("submit").addEventListener("click", function(event) {
+        event.preventDefault();
+        localStorage.setItem("certType", "ojt");
+        localStorage.setItem("studentName", document.getElementById("studentName").value);
+        localStorage.setItem("course", document.getElementById("course").value);
+        localStorage.setItem("school", document.getElementById("school").value);
+        localStorage.setItem("renderTime", document.getElementById("renderTime").value);
+        localStorage.setItem("dateStarted", document.getElementById("dateStarted").value);
+        localStorage.setItem("dateEnded", document.getElementById("dateEnded").value);
+        localStorage.setItem("dateIssued", document.getElementById("dateIssued").value);
+        localStorage.setItem("previousPage", "certojt"); 
 
-            window.location.href = "{% url 'print' %}";
-        });
-    </script>
+        window.location.href = "{% url 'print' %}";
+    });
+
+    // Populate form data from localStorage
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("studentName").value = localStorage.getItem("studentName") || "";
+        document.getElementById("course").value = localStorage.getItem("course") || "";
+        document.getElementById("school").value = localStorage.getItem("school") || "";
+        document.getElementById("renderTime").value = localStorage.getItem("renderTime") || "";
+        document.getElementById("dateStarted").value = localStorage.getItem("dateStarted") || "";
+        document.getElementById("dateEnded").value = localStorage.getItem("dateEnded") || "";
+        document.getElementById("dateIssued").value = localStorage.getItem("dateIssued") || "";
+        updatePreview();
+    });
+
+    // CLEAR FORM FUNCTION
+    document.getElementById("clear-form").addEventListener("click", function() {
+        // Clear form fields
+        document.getElementById("studentName").value = "";
+        document.getElementById("course").value = "";
+        document.getElementById("school").value = "";
+        document.getElementById("renderTime").value = "";
+        document.getElementById("dateStarted").value = "";
+        document.getElementById("dateEnded").value = "";
+        document.getElementById("dateIssued").value = "";
+        updatePreview();
+
+        // Clear localStorage entries
+        localStorage.removeItem("studentName");
+        localStorage.removeItem("course");
+        localStorage.removeItem("school");
+        localStorage.removeItem("renderTime");
+        localStorage.removeItem("dateStarted");
+        localStorage.removeItem("dateEnded");
+        localStorage.removeItem("dateIssued");
+    });
+</script>
 {% endblock %}

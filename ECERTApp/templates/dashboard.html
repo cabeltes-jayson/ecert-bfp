@@ -5,11 +5,14 @@
 {% block content %}
     <!-- STYLES -->
     <style>
-        .container {
-            display: flex;
-            justify-content: center;
-            gap: 200px;
-        }
+    body {
+        color: white;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        gap: 200px;
+    }
 
     .box {
         width: 200px;
@@ -38,7 +41,14 @@
     <h1>E-Certificate Dashboard</h1>
     <p>Make every cert happen</p>
 
-    <br> 
+    <br>
+    
+    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+    <h2>Welcome to the Dashboard, {{ request.user.firstname }}!</h2>
 
     <!-- 2 certs, butngan ranig image puhon instead of text -->
     <div class="container">
@@ -52,6 +62,6 @@
     </div>
 
     <!-- Temporary Logout -->
-    <a href="{% url 'home' %}"><button>Logout</button></a>
+    <a href="{% url 'logout' %}">Logout</a>
 
 {% endblock %}

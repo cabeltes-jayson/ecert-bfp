@@ -1,0 +1,247 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            /* min-height: 100vh; */
+            /* height: 100vh; */
+        }
+
+        .container .credentials {
+            flex: 1;
+            padding: 20px;
+            border-right: 2px solid black;
+            box-sizing: border-box;
+            background-image: url("{% static 'images/bg.png' %}");
+            background-size: cover;
+            background-position: center;
+            text-align: justify;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none; /* For Firefox */
+            -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+        }
+
+        .container .credentials::-webkit-scrollbar { 
+            display: none;  /* For Chrome, Safari, and Opera */
+        }
+
+        .container .credentials h3 {
+            text-align: center;
+        }
+
+        .credentials form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .credentials form input {
+            width: 50%;
+        }
+
+        .credentials form label {
+            text-align: left;
+            /* width: 100%;
+            max-width: 500px; */
+        }
+
+        .credentials label, .credentials input, .credentials textarea {
+            margin-bottom: 10px;
+        }
+
+        .credentials input, .credentials textarea {
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .credentials h3, label {
+            color: white;
+            font-size: 20px;
+        }
+
+        .container .credentials button {
+            /* align-self: flex-start; */
+            align-self: center;
+            padding: 5px 20px;
+            font-size: 15px;
+        }
+
+        .buttonses {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            gap: 10px;
+        }
+
+        /* .container .preview .logo-container img {
+            height: 100px;
+            width: 100px;
+        }
+
+        .container .preview .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .container .preview {
+            flex: 1;
+            padding: 20px;
+            background: #ffffff;
+            position: relative;
+            box-sizing: border-box;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .container .preview p {
+            text-align: justify;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+        }
+
+        .container .preview .headers span {
+            text-decoration: underline; 
+            color: blue;
+        }
+
+        .container .preview .headers .headerbold {
+            font-weight: bold;
+            font-size: 80%;
+        }
+
+        .container .preview .headers p {
+            text-align: center;
+            font-size: 80%;
+            margin: 0;
+        }
+
+        .container .preview .footer img {
+            width: 50%;
+            height: auto;
+        }
+
+        .container .preview .footer {
+            text-align: center;
+            margin-top: 50px;
+        } */
+
+        /* ID NAA SA CERT OJT & APP */
+        /* @font-face {
+            font-family: 'Eras Bold ITC';
+            src: url("{% static 'fonts/eras-bold-itc.ttf' %}") format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        #preview-header {
+            text-align: center;
+            font-size: 26px;
+            font-family: 'Eras Bold ITC', sans-serif;
+        } */
+
+        /* ID NAA SA CERT OJT & APP */
+        /* .signature {
+            text-align: right; 
+            margin-top: 120px;
+            width: 100%;
+            margin-bottom: 70%;
+            padding-right: 100px;
+        }
+
+        /* ID NAA SA CERT OJT & APP 
+        .signature p {
+            border-top: 1px solid black; 
+            margin: 0;
+            text-align: center;
+            display: inline-block;
+            width: auto;
+            font-size: 17px;
+        } */
+
+        /* .signature {
+            text-align: right; 
+            margin-top: 80px;
+            width: 100%;
+            margin-bottom: 70%;
+            padding-right: 100px;
+        }
+
+        .signature .signature-content {
+            display: inline-block;
+            text-align: center;
+        }
+
+        .signature .signature-content p {
+            margin: 0;
+            font-size: 18px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .signature .signature-content strong p {
+            font-family: Arial, sans-serif;
+            border-top: 1px solid black; 
+            width: calc(100% + 20px); /* Adjust the width to be a bit longer than the text above 
+        } */
+
+        /* ID NAA SA PIKAS */
+        /* #preview-personnel {
+            text-align: center;
+        } */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="credentials">
+            {% block credentials %}{% endblock %}
+        </div>
+
+        <!-- <div class="preview">
+
+            <div class="logo-container">
+                <img src="{% static 'images/logo-bfp.png' %}" alt="BFP_Logo">
+                <img src="{% static 'images/logo-bp.png' %}" alt="BFP_Logo">
+                <img id="emblem" src="{% static 'images/logo-emblem.png' %}" alt="BFP_Logo">
+            </div>
+
+            <div class="headers">
+                <p>Republic of the Philippines</p>
+                <p>Department of Interior and Local Government</p>
+                <p class="headerbold">BUREAU OF FIRE PROTECTION - REGION 10</p>
+                <p class="headerbold">REGION 10</p>
+                <p>CAGAYAN DE ORO FIRE DISTRICT OFFICE</p>
+                <p>Capt. Vicente Roa St., Cagayan de Oro City</p>
+                <p>Email Add: <span>cofdpersec24v@gmail.com</span></p>
+            </div>
+
+            <br>
+
+            <h3 id="preview-header">CERTIFICATION</h3>
+
+            {% block preview %}{% endblock %}
+            <div class="footer">
+                <img src="{% static 'images/bfp-footer.png' %}" alt="BFP_Footer">
+            </div>
+        </div> -->
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
