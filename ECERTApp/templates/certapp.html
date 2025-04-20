@@ -2,7 +2,7 @@
 
 {% block title %}CERTIFICATE OF APPEARANCE{% endblock %}
 
-{% block credentials %}
+{% block certificate-forms %}
     <h3>ENTER CREDENTIALS</h3>
     <form>
         <label>Station:</label>
@@ -12,183 +12,23 @@
         <label>Duration:</label>
         <input type="date" id="duration" placeholder="Enter Duration">
         <label>Personnel:</label>
-        <div id="personnel-container">
-            <div class="personnel-input">
-                <input type="text" class="personnel" placeholder="Enter Personnel">
-                <button type="button" class="add-personnel">+</button>
+        <div id="personnel-container-wrapper">
+            <div id="personnel-container">
+                <div class="personnel-input">
+                    <input type="text" class="personnel" placeholder="Enter Personnel">
+                    <div class="button-group">
+                        <button type="button" class="add-personnel">+</button>
+                    </div>
+                </div>
             </div>
         </div>
         <label>Date Issued:</label>
-        <input type="date" id="dateIssued">
-        <br>
-        <button id="submit">Submit</button>
+        <input type="date" id="date_issued">
     </form>
-
-    <br>
-
-    <div class="buttonses">
-        <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
-        <button id="clear-form">Clear Form</button> 
-        <a href="{% url 'home' %}"><button>Logout</button></a>
-    </div>
 {% endblock %}
-
-<!-- {% block preview %}
-    <h3 id="preview-header">CERTIFICATE OF APPEARANCE</h3>
-    <p style="text-indent: 80px;">THIS IS TO CERTIFY that the following personnel of 
-        <strong><span id="preview-station">________</span></strong> appeared to this office purposely to 
-        <strong><span id="preview-purpose">________</span></strong> on
-        <strong><span id="preview-duration">________</span></strong> at 
-        <strong>Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City</strong>, to wit:
-    </p>
-    <strong><p id="preview-personnel">[Enter Personnel]</p></strong>
-    <br><p style="text-indent: 80px;">This certification is being issued for whatever purpose it may serve.</p>
-    <br><p style="text-indent: 80px;">Issued this <strong><span id="preview-dateIssued">________</span></strong> at the Office of the District Fire Marshal,
-        Cagayan de Oro Fire District, Captain Vicente Roa St., Cagayan de Oro City.
-    </p>
-    <div class="signature">
-        <strong><p>District Fire Marshal</p></strong>
-    </div>
-{% endblock %} -->
 
 {% block scripts %}
 <script>
-    // CLEAR FORM FUNCTION
-    document.getElementById("clear-form").addEventListener("click", function() {
-        // Clear form fields
-        document.getElementById("station").value = "";
-        document.getElementById("purpose").value = "";
-        document.getElementById("duration").value = "";
-        document.getElementById("dateIssued").value = "";
-        document.getElementById("personnel-container").innerHTML = `
-            <div class="personnel-input">
-                <input type="text" class="personnel" placeholder="Enter Personnel" oninput="updatePreview()">
-                <button type="button" class="add-personnel">+</button>
-            </div>
-        `;
-        // updatePreview();
-
-        // Clear localStorage entries
-        localStorage.removeItem("station");
-        localStorage.removeItem("purpose");
-        localStorage.removeItem("personnel");
-        localStorage.removeItem("duration");
-        localStorage.removeItem("dateIssued");
-    });
-
-    // DATE
-    function formatDate(inputDate, withSuffix = false) {
-        if (!inputDate) return "________";
-
-        let date = new Date(inputDate);
-        let day = date.getDate();
-        let month = date.toLocaleString("en-GB", { month: "long" });
-        let year = date.getFullYear();
-
-        if (withSuffix) {
-            function getOrdinalSuffix(n) {
-                if (n > 3 && n < 21) return "th"; // Covers 11th to 20th
-                switch (n % 10) {
-                    case 1: return "st";
-                    case 2: return "nd";
-                    case 3: return "rd";
-                    default: return "th";
-                }
-            }
-            return `${day}${getOrdinalSuffix(day)} of ${month} ${year}`;
-        } else {
-            return `${day} ${month} ${year}`;
-        }
-    }
-
-    // PREVIEW FUNCTION
-    // function updatePreview() {
-    //     document.getElementById("preview-station").textContent = document.getElementById("station").value || "________";
-    //     document.getElementById("preview-purpose").textContent = document.getElementById("purpose").value || "________";
-    //     document.getElementById("preview-personnel").innerHTML = document.getElementById("personnel").value.replace(/\n/g, "<br>") || "[Enter Personnel]";
-    //     document.getElementById("preview-duration").textContent = formatDate(document.getElementById("duration").value, false);
-    //     document.getElementById("preview-dateIssued").textContent = formatDate(document.getElementById("dateIssued").value, true);
-    // }
-
-    // Add new personnel input field
-    document.addEventListener("click", function(event) {
-        if (event.target.classList.contains("add-personnel")) {
-            const personnelContainer = document.getElementById("personnel-container");
-            const newPersonnelInput = document.createElement("div");
-            newPersonnelInput.classList.add("personnel-input");
-            newPersonnelInput.innerHTML = `
-                <input type="text" class="personnel" placeholder="Enter Personnel">
-                <button type="button" class="add-personnel">+</button>
-                <button type="button" class="remove-personnel">-</button>
-            `;
-            personnelContainer.appendChild(newPersonnelInput);
-        }
-
-        // Remove personnel input field
-        if (event.target.classList.contains("remove-personnel")) {
-            const personnelInput = event.target.parentElement;
-            personnelInput.remove();
-        }
-    });
-
-    // Populate form data from localStorage
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("station").value = localStorage.getItem("station") || "";
-        document.getElementById("purpose").value = localStorage.getItem("purpose") || "";
-        document.getElementById("duration").value = localStorage.getItem("duration") || "";
-        document.getElementById("dateIssued").value = localStorage.getItem("dateIssued") || "";
-
-        const personnelData = localStorage.getItem("personnel");
-        const personnelContainer = document.getElementById("personnel-container");
-        personnelContainer.innerHTML = ""; // Clear the container
-
-        if (personnelData) {
-            const personnelList = personnelData.split("\n");
-            personnelList.forEach((person, index) => {
-                const newPersonnelInput = document.createElement("div");
-                newPersonnelInput.classList.add("personnel-input");
-
-                // Add a "remove" button only for additional personnel inputs
-                if (index === 0) {
-                    newPersonnelInput.innerHTML = `
-                        <input type="text" class="personnel" value="${person}" placeholder="Enter Personnel">
-                        <button type="button" class="add-personnel">+</button>
-                    `;
-                } else {
-                    newPersonnelInput.innerHTML = `
-                        <input type="text" class="personnel" value="${person}" placeholder="Enter Personnel">
-                        <button type="button" class="add-personnel">+</button>
-                        <button type="button" class="remove-personnel">-</button>
-                    `;
-                }
-
-                personnelContainer.appendChild(newPersonnelInput);
-            });
-        } else {
-            // Create the default first personnel input without a "remove" button
-            personnelContainer.innerHTML = `
-                <div class="personnel-input">
-                    <input type="text" class="personnel" placeholder="Enter Personnel">
-                    <button type="button" class="add-personnel">+</button>
-                </div>
-            `;
-        }
-    });
-
-    // SUBMIT TO PRINT
-    document.getElementById("submit").addEventListener("click", function(event) {
-        event.preventDefault();
-        localStorage.setItem("certType", "app");
-        localStorage.setItem("station", document.getElementById("station").value);
-        localStorage.setItem("purpose", document.getElementById("purpose").value);
-        localStorage.setItem("duration", document.getElementById("duration").value);
-        localStorage.setItem("dateIssued", document.getElementById("dateIssued").value);
-
-        const personnelInputs = document.querySelectorAll(".personnel");
-        const personnelList = Array.from(personnelInputs).map(input => input.value).join("\n");
-        localStorage.setItem("personnel", personnelList);
-
-        window.location.href = "{% url 'print' %}";
-    });
+    localStorage.setItem("certType", "app");
 </script>
 {% endblock %}

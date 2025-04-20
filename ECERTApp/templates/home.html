@@ -1,16 +1,127 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}HOME{% endblock %}
+{% block extra_css %}
+<style>
+    /* Set the entire dashboard background using bg.png */
+    body {
+         margin: 0;
+        padding: 0;
+        background: url("{% static 'images/bg.png' %}") no-repeat center center fixed;
+         background-size: cover;
+         font-family: Arial, sans-serif;
+         /* Use flexbox to center the content */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+  
+    /* Wrapper to constrain the content */
+    .content-wrapper {
+        width: 100%;
+        max-width: 1200px;
+        text-align: justify;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.35); /* semi-transparent overlay to improve readability */
+        border-radius: 10px;
+    }
+  
+    .welcome {
+        color: #fff;
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+  
+    /* Container for the two boxes */
+    .vision-mission-container {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+  
+    /* Common styles for both boxes */
+    .vision-box, .mission-box {
+        flex: 1 1 400px;
+        background: rgba(44, 62, 80, 0.9);
+        border: 2px solid #d35400;
+        border-radius: 15px;
+        padding: 40px;
+        color: #fff;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    }
+  
+    /* Hover effect to lift the box and change text color */
+    .vision-box:hover, .mission-box:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+  
+    .vision-box h3, .mission-box h3 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #e74c3c;
+        transition: color 0.3s ease;
+        text-align: center;
+    }
+  
+    .vision-box:hover h3, .mission-box:hover h3 {
+        color: #ff0000; /* orange on hover */
+    }
+  
+    .vision-box p, .mission-box p {
+        font-size: 1.3rem;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        transition: color 0.3s ease;
+    }
+  
+    .vision-box:hover p, .mission-box:hover p {
+        color: #ffa500; /* change text to orange on hover */
+    }
+
+    .content {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .content a button {
+        background: #ff5e00;
+        color: white;
+        font-size: 20px;
+        padding: 10px 50px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .content a button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-    <!-- STYLES -->
-    <style>
-        body {
-            color: white;
-        }
-    </style>
-
-    <!-- BODY -->
-    <h1>Welcome to BFP E-Certificate</h1>
-    <a href="{% url 'login' %}"><button>Login</button></a>
+<div class="content-wrapper"> 
+    <div class="vision-mission-container">
+        <div class="vision-box">
+            <h3>Vision</h3>
+            <p>A modern fire service fully capable of ensuring a fire safe nation by 2034.</p>
+        </div>
+        <div class="mission-box">
+            <h3>Mission</h3>
+            <p>We commit to prevent and suppress destructive fires, investigate its causes; enforce Fire Code and other related laws; respond to man-made and natural disasters and other emergencies.</p>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <a href="{% url 'login' %}"><button>LOGIN</button></a>
+</div>
 {% endblock %}

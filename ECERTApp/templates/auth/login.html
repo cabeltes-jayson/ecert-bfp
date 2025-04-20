@@ -30,6 +30,18 @@
         text-align: center;
         color: green;
     }
+
+    .btn-go-back {
+        margin-top: 10px;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
 </style>
 
 <div class="container mt-5">
@@ -61,6 +73,9 @@
 
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
+                    <a href="{% url 'home' %}">
+                        <button class="btn btn-danger btn-block btn-go-back">Go Back</button>
+                    </a>
                 </div>
             </div>
         </div>

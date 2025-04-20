@@ -9,8 +9,21 @@ Bootstrap
 Django
 HTML
 CSS
+Git
+Python
+
+# TO INSTALL
+VSCODE
+GIT
+PYTHON
+XAMPP
+MARIADB
 
 # DEPENDENCIES
 pip install django
 pip install mysqlclient
-pip install mysqlite (?)
+pip install waitress
+pip install whitenoise
+
+# RUN ONCE
+python manage.py collectstatic

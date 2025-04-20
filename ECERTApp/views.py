@@ -18,52 +18,16 @@ def user_login(request):
         else:
             messages.error(request, "Invalid username or password")
 
-    return render(request, "auth/login.html")
+    return render(request, 'auth/login.html', {'hide_sidebar': True})
 
 
 def user_logout(request):
     logout(request)
     messages.success(request, "You have been logged out.")
-    return redirect("login")
+    return redirect("home")
 
 def home(request):
-    return render(request, 'home.html')
-
-
-# def user_signup(request):
-#     if request.method == "POST":
-#         username = request.POST.get("username")
-#         password = request.POST.get("password")
-#         confirm_password = request.POST.get("confirm_password")
-#         firstname = request.POST.get("first_name")
-#         middlename = request.POST.get("middle_name")
-#         lastname = request.POST.get("last_name")
-#         email_address = request.POST.get("email")
-#         contact_number = request.POST.get("contact_number")
-
-#         if password != confirm_password:
-#             messages.error(request, "Passwords do not match!")
-#             return redirect("signup")
-
-#         if User.objects.filter(username=username).exists():
-#             messages.error(request, "Username already exists!")
-#             return redirect("signup")
-
-#         user = User.objects.create_user(
-#             username=username,
-#             password=password,
-#             firstname=firstname,
-#             middlename=middlename if middlename else None,
-#             lastname=lastname,
-#             email_address=email_address,
-#             contact_number=contact_number
-#         )
-
-#         messages.success(request, "Account created successfully! You can now log in.")
-#         return redirect("login")
-
-#     return render(request, "auth/signup.html")
-
+    return render(request, 'home.html', {'hide_sidebar': True})
 
 def dashboard(request):
     return render(request, "dashboard.html")
@@ -74,5 +38,5 @@ def certapp(request):
 def certojt(request):
     return render(request, 'certojt.html')
 
-def print(request):
-    return render(request, 'print.html')
+def certcom(request):
+    return render(request, 'certcom.html')

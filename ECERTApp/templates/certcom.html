@@ -1,0 +1,425 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+        /* .abril-fatface-regular {
+            font-family: "Abril Fatface", serif;
+            font-weight: 400;
+            font-style: normal;
+        } */
+
+        /* General styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .page {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: url("{% static 'images/certcom.jpg' %}") no-repeat center center;
+            background-size: contain;
+            page-break-after: always;
+            margin-bottom: 20px;
+        }
+
+        .page:last-child {
+            page-break-after: auto;
+        }
+
+        .field-box {
+            position: absolute;
+            top: 390px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .field-box p {
+            width: 580px;
+            color: rgb(78, 78, 78);
+        }
+
+        .centered-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        #personnel_name {
+            font-family: "Abril Fatface", serif;
+            font-weight: 400;
+            font-style: bold;
+            font-size: 55px;
+            padding: 10px;
+            text-align: center;
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 800px; /* Set a fixed width for the input field */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: visible; /* Hide overflowing text */
+            z-index: 1;
+        }
+
+        /* RIGHTBOX */
+        .right-box {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px;      /* Set the desired fixed width for the right side */
+            height: 100vh;     /* Full viewport height */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centers the buttons vertically */
+            align-items: center;     /* Centers the buttons horizontally */
+            z-index: 1;
+        }
+
+        .forms-commendation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gender {
+            align-items: center;
+            text-align: center;
+            padding: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* make the dropdown the same width as your buttons */
+        .forms-commendation .gender {
+            width: 100%;
+        }
+
+        .forms-commendation form input {
+            width: 90%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .forms-commendation form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-commendation {
+            align-items: center;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .button-commendation button {
+            width: 150%;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .button-commendation button:hover {
+            background: #0056b3;
+        }
+
+        /* your existing anchor rule stays the same */
+        .button-commendation a {
+            display: block;
+            width: 150%;
+        }
+
+        .button-commendation a button {
+            background: #dc3545;
+            width: 100%;
+        }
+
+        .button-commendation a button:hover {
+            background: #a71d2a;
+        }
+
+        /* OTHERS */
+        .remove-page-btn {
+            position: absolute;
+            top: 10px;
+            right: 320px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: rgba(255, 0, 0, 0.5); /* Transparent red */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .remove-page-btn:hover {
+            background-color: red; /* Solid red on hover */
+        }
+
+        /* PRINT */
+        @media print {
+            @page {
+                size: auto;
+                margin: 0;
+            }
+
+            body, html {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                overflow: visible;
+            }
+
+            .page {
+                page-break-after: always;
+                -webkit-print-color-adjust: exact; /* For WebKit browsers like Chrome */
+                print-color-adjust: exact; /* For other browsers */
+                background-size: 100% 100%;
+            }
+
+            .page:last-child {
+                page-break-after: auto;
+            }
+
+            .right-box {
+                display: none;
+            }
+
+            .centered-text input {
+                border: none;
+            }
+
+            .remove-page-btn {
+                display: none;
+            }
+
+            .page {
+                transform: none;
+                transform-origin: top left;
+            }
+
+            .field-box {
+                top: 490px;
+            }
+
+            .field-box p {
+                width: 580px;
+                color: rgb(78, 78, 78);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SAVE -->
+    <div class="container">
+        <!-- Pages Container -->
+        <div id="pages-container">
+            <div class="page" onclick="selectPage(this)">
+                <div class="centered-text">
+                    <input id="personnel_name" type="text" placeholder="Enter Name Here" oninput="adjustInput(this)">
+                </div>
+
+                <div class="field-box">
+                    <p class="commendation-fields"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHTBOX -->
+        <div class="right-box">
+            <div class="forms-commendation">
+                <form>
+                    <label>Gender:</label>
+                    <select id="gender" class="gender" onchange="updateActivePageData()">
+                        <option value="his">Male</option>
+                        <option value="her">Female</option>
+                    </select>
+                    <label>Duration:</label>
+                    <input type="date" id="duration" placeholder="Enter Duration" onchange="updateActivePageData()">
+                </form>
+            </div>
+
+            <div class="button-commendation">
+                <button onclick="addPage()">Add Page</button>
+                <button onclick="printCert()">Print</button>
+                <a href="{% url 'dashboard' %}"><button>Go Back</button></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // !!!!
+        // Global variable to track the active (currently editing) page.
+        let currentEditingPage = null;
+
+        // DATE NEW!!!!
+        function formatDate(inputDate, withSuffix = false, html = true) {
+            if (!inputDate) return html ? "________" : "________";
+            let date = new Date(inputDate);
+            let day = date.getDate();
+            let month = date.toLocaleString("en-GB", { month: "long" });
+            let year = date.getFullYear();
+
+            function getOrdinalSuffix(n) {
+                if (n > 3 && n < 21) return "th";
+                switch (n % 10) {
+                    case 1: return "st";
+                    case 2: return "nd";
+                    case 3: return "rd";
+                    default: return "th";
+                }
+            }
+
+            if (withSuffix) {
+                if (html) {
+                    return `<strong><i><u>${day}<sup>${getOrdinalSuffix(day)}</sup></u></i></strong> day of <strong><i><u>${month}</u></i></strong> <strong><i><u>${year}</u></i></strong>`;
+                } else {
+                    return `${day}${getOrdinalSuffix(day)} day of ${month} ${year}`;
+                }
+            } else {
+                return `${day} ${month} ${year}`;
+            }
+        }
+
+        // This function updates the commendation fields for the active page and saves its data.
+        function updateActivePageData() {
+            // Get the gender and duration values from the right-box.
+            let gender = document.getElementById("gender").value || "________";
+            let durationInput = document.getElementById("duration").value;
+            let durationPlain = formatDate(durationInput, false, false) || "________";
+            let durationSuffix = formatDate(durationInput, true, true) || "________";
+            // Create the fields HTML string using plain version in the first sentence and suffixed version in the second.
+            let fields = `<p>for imparting ${gender} knowledge and insights for the personnel of Cagayan de Oro Fire District as the Tropp Information & Education Speaker during the Flag Raising Ceremony held this ${durationPlain}.</p>
+                          <p>Given this ${durationSuffix} at COFD Grounds, Cagayan de Oro City.</p>`;
+            // If there's an active page, update its field-box and save the data in its dataset.
+            if (currentEditingPage) {
+                currentEditingPage.querySelector(".commendation-fields").innerHTML = fields;
+                currentEditingPage.dataset.gender = gender;
+                currentEditingPage.dataset.duration = durationInput;
+            }
+        }
+        
+         // When a page is clicked, select it for editing.
+        function selectPage(pageElement) {
+            currentEditingPage = pageElement;
+            // Load saved data from the page's dataset into the right-box inputs (if available)
+            document.getElementById("gender").value = pageElement.dataset.gender || "his";
+            document.getElementById("duration").value = pageElement.dataset.duration || "";
+            // Update the right-box inputs to reflect the page's current state.
+            updateActivePageData();
+        }
+
+        function addPage() {
+            const pagesContainer = document.getElementById('pages-container');
+            // Create a new page element.
+            const newPage = document.createElement('div');
+            newPage.classList.add('page');
+            // Add click handler so that clicking the page selects it.
+            newPage.setAttribute("onclick", "selectPage(this)");
+            // Include a centered text input, a field-box for commendation fields, and a Remove button.
+            newPage.innerHTML = `
+                <div class="centered-text">
+                    <input id="personnel_name" type="text" placeholder="Enter Name Here" oninput="adjustInput(this)">
+                </div>
+
+                <div class="field-box">
+                    <p class="commendation-fields"></p>
+                </div>
+                <button class="remove-page-btn" onclick="removePage(event, this)">Remove</button>
+            `;
+            pagesContainer.appendChild(newPage);
+            // Optionally, auto-select the newly added page.
+            selectPage(newPage);
+        }
+        
+        function removePage(e, button) {
+            // Prevent the click event from propagating to the page selection handler.
+            e.stopPropagation();
+            const page = button.parentElement;
+            const pagesContainer = document.getElementById('pages-container');
+            // If the page being removed is the current active page, clear currentEditingPage.
+            if (page === currentEditingPage) {
+                currentEditingPage = null;
+                // Optionally, you could select another page here.
+            }
+            pagesContainer.removeChild(page);
+        }
+
+        function adjustInput(input) {
+            const maxFontSize = 55; // Maximum font size
+            const minFontSize = 30; // Minimum font size
+            const wordLimit = 20;
+            const wordLimit30 = 25; // Character limit including spaces
+            let textLength = input.value.length;
+            let fontSize = maxFontSize;
+            if (textLength > wordLimit) {
+                fontSize -= 2;
+            }
+            if (textLength > wordLimit30) {
+                let excessChars = textLength - wordLimit30;
+                fontSize = maxFontSize - (excessChars * 2);
+            }
+            if (fontSize < minFontSize) {
+                fontSize = minFontSize;
+            }
+            input.style.fontSize = `${fontSize}px`;
+            setTimeout(() => {
+                const tempSpan = document.createElement("span");
+                tempSpan.style.fontSize = fontSize + "px";
+                tempSpan.style.fontFamily = window.getComputedStyle(input).fontFamily;
+                tempSpan.style.whiteSpace = "nowrap";
+                tempSpan.style.visibility = "hidden";
+                tempSpan.textContent = input.value;
+                document.body.appendChild(tempSpan);
+                const textWidth = tempSpan.offsetWidth;
+                document.body.removeChild(tempSpan);
+                if (textWidth > input.offsetWidth) {
+                    alert("name too long!");
+                }
+            }, 0);
+        }
+
+        function printCert() {
+            window.print();
+        }
+
+        // Call commendationFields on page load to set initial content
+        document.addEventListener("DOMContentLoaded", function() {
+            let firstPage = document.querySelector('#pages-container .page');
+            if (firstPage) {
+                selectPage(firstPage);
+            }
+        });
+    </script>
+</body>
+</html>
