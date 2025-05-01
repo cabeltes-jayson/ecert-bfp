@@ -26,7 +26,7 @@
             position: relative;
             width: 100%;
             height: 100vh;
-            background: url("{% static 'images/certcom.jpg' %}") no-repeat center center;
+            background: url("{% static 'images/certcom.png' %}") no-repeat center center;
             background-size: contain;
             page-break-after: always;
             margin-bottom: 20px;
@@ -38,7 +38,7 @@
 
         .field-box {
             position: absolute;
-            top: 390px;
+            top: 410px;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
@@ -52,7 +52,7 @@
 
         .centered-text {
             position: absolute;
-            top: 50%;
+            top: 53%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
@@ -187,7 +187,7 @@
         /* PRINT */
         @media print {
             @page {
-                size: auto;
+                size: 8.5in 13in landscape;
                 margin: 0;
             }
 
@@ -204,6 +204,8 @@
                 -webkit-print-color-adjust: exact; /* For WebKit browsers like Chrome */
                 print-color-adjust: exact; /* For other browsers */
                 background-size: 100% 100%;
+                transform: none;
+                transform-origin: top left;
             }
 
             .page:last-child {
@@ -222,13 +224,8 @@
                 display: none;
             }
 
-            .page {
-                transform: none;
-                transform-origin: top left;
-            }
-
             .field-box {
-                top: 490px;
+                top: 510px;
             }
 
             .field-box p {
