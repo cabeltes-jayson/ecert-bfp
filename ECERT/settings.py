@@ -23,10 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$sc*o55&$%l89gb-=(1c(1d3lo)90-b38wp&^27&so7b2p%cs6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'BFP-ECERT']
 
 # Application definition
 
@@ -48,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'ECERT.urls'
@@ -132,4 +132,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom USER instead of DJANGO USER
 AUTH_USER_MODEL = "ECERTApp.User" 
-

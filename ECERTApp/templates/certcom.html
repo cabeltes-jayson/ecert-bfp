@@ -38,15 +38,15 @@
 
         .field-box {
             position: absolute;
-            top: 410px;
+            top: 420px;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            font-size: 15px;
+            font-size: 20px;
         }
 
         .field-box p {
-            width: 580px;
+            width: 700px;
             color: rgb(78, 78, 78);
         }
 
@@ -62,7 +62,7 @@
             font-family: "Abril Fatface", serif;
             font-weight: 400;
             font-style: bold;
-            font-size: 55px;
+            font-size: 65px;
             padding: 10px;
             text-align: center;
             border: none;
@@ -187,7 +187,7 @@
         /* PRINT */
         @media print {
             @page {
-                size: 8.5in 13in landscape;
+                size: auto;
                 margin: 0;
             }
 
@@ -225,11 +225,11 @@
             }
 
             .field-box {
-                top: 510px;
+                top: 530px;
             }
 
             .field-box p {
-                width: 580px;
+                width: 700px;
                 color: rgb(78, 78, 78);
             }
         }
@@ -316,7 +316,7 @@
             let durationPlain = formatDate(durationInput, false, false) || "________";
             let durationSuffix = formatDate(durationInput, true, true) || "________";
             // Create the fields HTML string using plain version in the first sentence and suffixed version in the second.
-            let fields = `<p>for imparting ${gender} knowledge and insights for the personnel of Cagayan de Oro Fire District as the Tropp Information & Education Speaker during the Flag Raising Ceremony held this ${durationPlain}.</p>
+            let fields = `<p>for imparting ${gender} knowledge and insights for the personnel of Cagayan de Oro Fire District as the Troop Information & Education Speaker during the Flag Raising Ceremony held this ${durationPlain}.</p>
                           <p>Given this ${durationSuffix} at COFD Grounds, Cagayan de Oro City.</p>`;
             // If there's an active page, update its field-box and save the data in its dataset.
             if (currentEditingPage) {
@@ -372,38 +372,23 @@
             pagesContainer.removeChild(page);
         }
 
-        function adjustInput(input) {
-            const maxFontSize = 55; // Maximum font size
-            const minFontSize = 30; // Minimum font size
-            const wordLimit = 20;
-            const wordLimit30 = 25; // Character limit including spaces
-            let textLength = input.value.length;
-            let fontSize = maxFontSize;
-            if (textLength > wordLimit) {
-                fontSize -= 2;
+        function adjustInput(inputElement) {
+            const charCount = inputElement.value.length;
+            let fontSize = 65; // Default font size in px
+
+            if (charCount > 15) {
+                // Decrease font size by 1px for each character over 15, up to a maximum of 5 times
+                const extraChars = Math.min(charCount - 15, 5); // Limit to 5 decreases
+                fontSize -= extraChars; // Decrease font size by the number of extra characters
             }
-            if (textLength > wordLimit30) {
-                let excessChars = textLength - wordLimit30;
-                fontSize = maxFontSize - (excessChars * 2);
+
+            if (charCount > 20) {
+                // Further decrease font size by 2px for every additional 3 characters over 20
+                const additionalChars = Math.floor((charCount - 20) / 2);
+                fontSize -= additionalChars * 3;
             }
-            if (fontSize < minFontSize) {
-                fontSize = minFontSize;
-            }
-            input.style.fontSize = `${fontSize}px`;
-            setTimeout(() => {
-                const tempSpan = document.createElement("span");
-                tempSpan.style.fontSize = fontSize + "px";
-                tempSpan.style.fontFamily = window.getComputedStyle(input).fontFamily;
-                tempSpan.style.whiteSpace = "nowrap";
-                tempSpan.style.visibility = "hidden";
-                tempSpan.textContent = input.value;
-                document.body.appendChild(tempSpan);
-                const textWidth = tempSpan.offsetWidth;
-                document.body.removeChild(tempSpan);
-                if (textWidth > input.offsetWidth) {
-                    alert("name too long!");
-                }
-            }, 0);
+
+            inputElement.style.fontSize = fontSize + "px";
         }
 
         function printCert() {
